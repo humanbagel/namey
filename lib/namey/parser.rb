@@ -13,8 +13,8 @@ module Namey
     #
     # initialize the parser
     # dbname - Sequel style db URI ex: 'sqlite://foo.db'
-    #   
-    def initialize(dbname = Namey.db_path)     
+    #
+    def initialize(dbname = Namey.db_path)
       @db = Sequel.connect(dbname)
     end
 
@@ -34,7 +34,7 @@ module Namey
 
     #
     # load in the surname list
-    #   
+    #
     def load_surnames(src)
       parse_file(src, "surname")
     end
@@ -60,7 +60,7 @@ module Namey
 
       count = 0
 #      names = File.foreach(src).collect do |line|
-      names = open(src).collect do |line|        
+      names = open(src).collect do |line|
         count += 1
         if count % 2000 == 0
           puts count
@@ -72,6 +72,7 @@ module Namey
         freq = data[2].to_f
 
         name = if dest == "surname"
+                 next unless freq <= 40
                  cleanup_surname(name)
                else
                  cleanup_firstname(name)
@@ -119,8 +120,8 @@ module Namey
         name.gsub!(/^Mac(\w+)/) { |s| "Mac#{$1.capitalize}" }
         name.gsub!(/^Osh(\w+)/) { |s| "O'sh#{$1}" }
         name.gsub!(/^Van(\w+)/) { |s| "Van#{$1.capitalize}" }
-        name.gsub!(/^Von(\w+)/) { |s| "Von#{$1.capitalize}" }        
-#        name.gsub!(/^Dev(\w+)/) { |s| "DeV#{$1}" }        
+        name.gsub!(/^Von(\w+)/) { |s| "Von#{$1.capitalize}" }
+#        name.gsub!(/^Dev(\w+)/) { |s| "DeV#{$1}" }
       end
       name
     end
