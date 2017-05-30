@@ -59,8 +59,9 @@ module Namey
       puts "***** Importing #{dest}"
 
       count = 0
+      names = []
 #      names = File.foreach(src).collect do |line|
-      names = open(src).collect do |line|
+      open(src).each do |line|
         count += 1
         if count % 2000 == 0
           puts count
@@ -78,7 +79,7 @@ module Namey
                  cleanup_firstname(name)
                end
 
-        {:name => name, :freq => freq}
+        names << {:name => name, :freq => freq}
       end
 
       puts "loading into db"
